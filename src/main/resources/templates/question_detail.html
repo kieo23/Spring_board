@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<!-- 현재 홈경로 static/ 으로 되어있다 -->
+<!-- style.css의 스타일을 가져와 상자text/css에 적용시킨다 -->
 </head>
 <body>
-	<!--	<h1>제목</h1>
-	<div>내용</div> -->
 	<h1 th:text="${question.subject}"></h1>
 	<div th:text="${question.content}"></div>
-
-	<!-- 	#lists.size(객체) 객체의 길이를 반환함-->
+	
+<!-- #lists.size(객체): 타임리프 제공 메서드, 자바객체의 길이를 반환함	 -->
+<!-- question.answerList : model을 통해 가져온다, 해당질문.답변갯수를 의미함 -->
 	<h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
 	<div>
 		<ul>
@@ -18,7 +20,8 @@
 				th:text="${answer.content}"></li>
 		</ul>
 	</div>
-	<!-- url+자바객체 만들기 : /answer/create/ + 자바객체, 답변 = content, 전송방식 -->
+
+	<!-- url+자바객체 만들기 : /answer/create/ + 자바객체, 답변 = content,  전송방식 : post   -->
 	<form th:action="@{|/answer/create/${question.id}|}" method="post">
 		<textarea name="content" id="content" rows="15"></textarea>
 		<input type="submit" value="답변등록">

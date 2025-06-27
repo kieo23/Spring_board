@@ -1,25 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<title>Document</title>
+<meta charset="UTF-8" />
+<title>Document</title>
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 </head>
 <body>
-<table>
-  	<thead>
-  		<tr>
-			<th>제목</th>
-			<th>작성일시</th>
-		</tr>
-    </thead>
-  <tbody>
-        <tr th:each="question, index : ${questionList}">
-            <td>
-                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
-            </td>
-            <td th:text="${question.createDate}"></td>
-        </tr>
-  </tbody>	
-</table>
+	<div class="container my-3">
+		<table class="table">
+			<thead class="table-dark">
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성일시</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="question, loop : ${questionList}">
+					<td th:text="${loop.count}"></td>
+					<!-- 실제값은 2,3,4 이지만 뷰에선 1,2,3 으로 보여줌 -->
+					
+					<td><a th:href="@{|/question/detail/${question.id}|}"
+						th:text="${question.subject}"></a></td>
+					<td
+						th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
