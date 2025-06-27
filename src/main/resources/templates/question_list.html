@@ -1,12 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html layout:decorate="~{layout}">
+<!-- layout:decoreate -> layout.html 부모 템플릿으로 선언 -->
+
 <head>
 <meta charset="UTF-8" />
 <title>Document</title>
 <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 </head>
 <body>
-	<div class="container my-3">
+	<div layout:fragment="content" class="container my-3">
 		<table class="table">
 			<thead class="table-dark">
 				<tr>
