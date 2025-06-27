@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class QuestionServive {
+public class QuestionService {
 
 	private final QuestionRepository questionRepository;
 
