@@ -7,7 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mysite.sbb.answer.AnswerForm;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +36,7 @@ public class QuestionController {
 	// 상세조회
 	// @PathVariable("id") Integer id
 	@GetMapping(value = "/detail/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id) {
+	public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
 		Question question = this.questionService.getQuestion(id);
 		model.addAttribute("question", question);
 		return "question_detail";
@@ -42,7 +45,7 @@ public class QuestionController {
 
 	// 질문 등록 메서드
 	@GetMapping("/create")
-	public String questionCreate() {
+	public String questionCreate(QuestionForm questionForm) {
 		return "question_form";
 	}
 
@@ -54,9 +57,11 @@ public class QuestionController {
 //		this.questionService.create(subject, content);
 //		return "redirect:/question/list"; // 질문 저장 후 질문목록으로 이동
 //	}
+
+	@PostMapping("/create")
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return "question_from";
+			return "question_form";
 		}
 		this.questionService.create(questionForm.getSubject(), questionForm.getContent());
 		return "redirect:/question/list";
