@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 // @RequestMapping을 이용해서 프리픽스(prefix 접두사) 지정해서 사용
@@ -46,11 +46,19 @@ public class QuestionController {
 		return "question_form";
 	}
 
-	@PostMapping("/create")
-	public String questionCreate(@RequestParam(value = "subject") String subject,
-			@RequestParam(value = "content") String content) {
-		// Service에서 처리 할 것
-		this.questionService.create(subject, content);
-		return "redirect:/question/list"; // 질문 저장 후 질문목록으로 이동
+//	@PostMapping("/create")
+//	public String questionCreate(@RequestParam(value = "subject") String subject,
+//			@RequestParam(value = "content") String content) {
+//		// html에서 받아온 정보를 Service에 보내어 저장시켜 처리함
+//		// 받아올 정보는 "name" 키워드에 있는 변수명과 일치해야함
+//		this.questionService.create(subject, content);
+//		return "redirect:/question/list"; // 질문 저장 후 질문목록으로 이동
+//	}
+	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "question_from";
+		}
+		this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+		return "redirect:/question/list";
 	}
 }
