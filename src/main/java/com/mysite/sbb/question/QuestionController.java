@@ -1,7 +1,6 @@
 package com.mysite.sbb.question;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.sbb.answer.AnswerForm;
 
@@ -26,10 +26,10 @@ public class QuestionController {
 
 	// 질문 목록
 	@GetMapping("/list")
-	public String list(Model model) {
-		List<Question> questionList = this.questionService.getList();
-		model.addAttribute("questionList", questionList); // db --> model 저장
-		return "question_list"; // question_list.html에서 model 접근해서 사용
+	public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+		Page<Question> paging = this.questionService.getList(page);
+		model.addAttribute("paging", paging);
+		return "question_list";
 
 	}
 
@@ -43,22 +43,15 @@ public class QuestionController {
 
 	}
 
-	// 질문 등록 메서드
 	@GetMapping("/create")
 	public String questionCreate(QuestionForm questionForm) {
 		return "question_form";
 	}
 
-//	@PostMapping("/create")
-//	public String questionCreate(@RequestParam(value = "subject") String subject,
-//			@RequestParam(value = "content") String content) {
-//		// html에서 받아온 정보를 Service에 보내어 저장시켜 처리함
-//		// 받아올 정보는 "name" 키워드에 있는 변수명과 일치해야함
-//		this.questionService.create(subject, content);
-//		return "redirect:/question/list"; // 질문 저장 후 질문목록으로 이동
-//	}
-
+	// 메서드 오버로딩
 	@PostMapping("/create")
+	// @Valid --> 유효성 검사 트리거(방아쇠) 역할
+	// QuestionForm --> 사용자가 입력한 질문 데이터를 담기 위한 DTO(데이터 전달 객체) --> 2-3 컨트롤러에 전송하기 보세요
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "question_form";
@@ -66,4 +59,5 @@ public class QuestionController {
 		this.questionService.create(questionForm.getSubject(), questionForm.getContent());
 		return "redirect:/question/list";
 	}
+
 }

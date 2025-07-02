@@ -1,16 +1,17 @@
 <!doctype html>
-<html layout:decorate="~{layout}">
-<!-- layout:decoreate -> layout.html 부모 템플릿으로 선언 -->
 
+<!-- 타임리프의 layout:decorate 속성은 템플릿의 레이아웃(부모 템플릿, 여기서는 layout.html) 설정함 -->
+<html layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8" />
 <title>Document</title>
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 </head>
 <body>
+
+	<!-- 타임리프의 layout:fragment="content" 속성은 부모 템플릿의 요소를 자식에게 상속한다  -->
 	<div layout:fragment="content" class="container my-3">
 		<table class="table">
-			<thead class="table-dark">
+			<thead class="table-light">
 				<tr>
 					<th>번호</th>
 					<th>제목</th>
@@ -18,18 +19,44 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="question, loop : ${questionList}">
+				<!-- 번호는 loop.count를 사용하여 표시 : 자바객체의 id가 아님(주의), 단순 번호임 -->
+				<tr th:each="question, loop : ${paging}">
 					<td th:text="${loop.count}"></td>
-					<!-- 실제값은 2,3,4 이지만 뷰에선 1,2,3 으로 보여줌 -->
-					
 					<td><a th:href="@{|/question/detail/${question.id}|}"
 						th:text="${question.subject}"></a></td>
+					<!-- 타임리프 #temporals.format(날짜 객체, 날짜 포맷)	 -->
 					<td
 						th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 				</tr>
 			</tbody>
 		</table>
-		<a href="/question/create" class="btn btn-primary">질문 등록</a>
+
+		<!-- 페이징처리 시작 -->
+		<div th:if="${!paging.isEmpty()}">
+			<ul class="pagination justify-content-center">
+				<li class="page-item"
+					th:classappend="${!paging.hasPrevious} ? 'disabled'"><a
+					class="page-link" th:href="@{|?page=${paging.number-1}|}"> <span>이전</span>
+				</a></li>
+                <!-- 현재 페이지를 기준으로 좌/우 각각 5개 페이지를 생성토록 수정 -->
+				<li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+
+				    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+				    
+					th:classappend="${page == paging.number} ? 'active'"
+					class="page-item"><a th:text="${page}" class="page-link"
+					th:href="@{|?page=${page}|}"></a></li>
+				<li class="page-item"
+					th:classappend="${!paging.hasNext} ? 'disabled'"><a
+					class="page-link" th:href="@{|?page=${paging.number+1}|}"> <span>다음</span>
+				</a></li>
+			</ul>
+		</div>
+		<!-- 페이징처리 끝 -->
+
+		<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
 	</div>
+
+
 </body>
 </html>

@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 현재 홈경로 static/ 으로 되어있다 -->
-<!-- style.css의 스타일을 가져와 상자text/css에 적용시킨다 -->
 </head>
 <body>
 	<div layout:fragment="content" class="container my-3">
 		<!-- 질문 -->
 		<h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
-		<div class="card my-3">
+		<div class="card my-3 ">
 			<div class="card-body">
 				<div class="card-text" style="white-space: pre-line;"
 					th:text="${question.content}"></div>
@@ -42,15 +40,12 @@
 		<!-- 답변 작성 -->
 		<form th:action="@{|/answer/create/${question.id}|}"
 			th:object="${answerForm}" method="post" class="my-3">
-			<div class="alert alert-danger" role="alert"
-				th:if="${#fields.hasAnyErrors()}">
-				<div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-			</div>
-
-			<textarea th:field="*{content}" name="content" id="content" rows="10" class="form-control"></textarea>
+<!--  th:replace 속성을 사용하여 템플릿내에 form_errors.html 로 div 요소의 내용을 대체함 -->
+			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+			<textarea th:field="*{content}" name="content" id="content" rows="10"
+				class="form-control"></textarea>
 			<input type="submit" value="답변등록" class="btn btn-primary my-2">
 		</form>
 	</div>
-	</form>
 </body>
 </html>
