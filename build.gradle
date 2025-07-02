@@ -37,7 +37,12 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	//validation
 	 implementation 'org.springframework.boot:spring-boot-starter-validation'
+	 	// security (여기에 추가)
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 }
+	 
+
 
 
 tasks.named('test') {
