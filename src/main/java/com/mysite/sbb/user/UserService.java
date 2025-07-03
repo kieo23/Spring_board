@@ -19,9 +19,11 @@ public class UserService {
 		user.setUsername(username);
 		user.setEmail(email);
 		// @bean 으로 등록된 메서드 가진 DI(객체주입)
+
+		// 아랫줄에서 불러온것으로 대체됨
 //		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		user.setPassword(passwordEncoder.encode(password));
-//		this.userRepository.save(user);
+		this.userRepository.save(user);
 		return null;
 	}
 }
