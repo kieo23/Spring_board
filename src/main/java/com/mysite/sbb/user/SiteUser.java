@@ -25,4 +25,11 @@ public class SiteUser {
 	@Column(unique = true)
 	private String email;
 
+	// 위 아래 내역은 내가 Ai에게 물어본것으로
+	// 나중에 다시 확인할것
+//	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Question> questionList;
+//
+//	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Answer> answerList;
 }

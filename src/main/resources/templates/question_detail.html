@@ -14,6 +14,12 @@
 					th:text="${question.content}"></div>
 				<div class="d-flex justify-content-end">
 					<div class="badge bg-light text-dark p-2 text-start">
+
+						<!-- question.author가 null값이 아니라면 "유저이름"을 출력해라 -->
+						<div class="mb-2">
+							<span th:if="${question.author != null}"
+								th:text="${question.author.username}"></span>
+						</div>
 						<div
 							th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>
@@ -30,6 +36,12 @@
 					th:text="${answer.content}"></div>
 				<div class="d-flex justify-content-end">
 					<div class="badge bg-light text-dark p-2 text-start">
+
+						<!-- question.author가 null값이 아니라면 "유저이름"을 출력해라 -->
+						<div class="mb-2">
+							<span th:if="${question.author != null}"
+								th:text="${question.author.username}"></span>
+						</div>
 						<div
 							th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 					</div>
@@ -40,10 +52,17 @@
 		<!-- 답변 작성 -->
 		<form th:action="@{|/answer/create/${question.id}|}"
 			th:object="${answerForm}" method="post" class="my-3">
-<!--  th:replace 속성을 사용하여 템플릿내에 form_errors.html 로 div 요소의 내용을 대체함 -->
+			<!--  th:replace 속성을 사용하여 템플릿내에 form_errors.html 로 div 요소의 내용을 대체함 -->
 			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
-			<textarea th:field="*{content}" name="content" id="content" rows="10"
-				class="form-control"></textarea>
+
+			<!-- 			<textarea th:field="*{content}" name="content" id="content" rows="10" -->
+			<!-- 				class="form-control"></textarea> -->
+
+			<textarea sec:authorize="isAnonymous()" disabled
+				th:field="*{content}" class="form-control" rows="10"></textarea>
+			<textarea sec:authorize="isAuthenticated()" th:field="*{content}"
+				class="form-control" rows="10"></textarea>
+
 			<input type="submit" value="답변등록" class="btn btn-primary my-2">
 		</form>
 	</div>
