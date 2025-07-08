@@ -15,7 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-//클래스 타입의 시큐리티
+//클래스 레벨 타입의 시큐리티
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 

@@ -51,7 +51,7 @@ public class QuestionController {
 
 	}
 
-	// @PreAuthorize("isAuthenticated()") --> 로그인이 안될경우만 실행
+	// @PreAuthorize("isAuthenticated()") --> 인증된(로그인한) 사용자일 경우 작동
 	// 로그인 안된경우, 로그인 페이지로 강제 이동함
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/create")
