@@ -41,4 +41,7 @@ public class Question {
 	private SiteUser author;
 	// 글쓴이 항목 추가 "자식"
 
+	// 날짜 추가 -> 객체이름 : modifyDate -> DB에는 modify_Date
+	private LocalDateTime modifyDate;
+
 }
